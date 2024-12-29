@@ -46,6 +46,7 @@ app.get("/scrape", async (req, res) => {
                     await page.keyboard.press("Enter");
                     await page.waitForSelector("#s-result-sort-select", { timeout: 30000 });
                     await page.select("#s-result-sort-select", "price-asc-rank");
+                    console.log('Gotten amazon data')
                 } else if (url.includes("ebay")) {
                     await page.waitForSelector("#gh-ac", { timeout: 30000 });
                     await page.type("#gh-ac", searchTerm);
