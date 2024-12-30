@@ -7,6 +7,12 @@ const PORT = 3000;
 
 app.use(cors());
 
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.set('Access-Control-Allow-Origin', '*');
+    res.json({ error: err.message });
+});
+
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
 });
