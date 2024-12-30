@@ -33,61 +33,61 @@ app.get("/scrape", async (req, res) => {
     try {
         // Scraping function
         const scrapeWebsite = async (url, selectors) => {
-            const page = await browser.newPage();
-            page.setDefaultNavigationTimeout(3 * 60 * 1000);
+            // const page = await browser.newPage();
+            // page.setDefaultNavigationTimeout(3 * 60 * 1000);
 
-            try {
-                await page.goto(url, { waitUntil: "domcontentloaded" });
-                console.log(`Navigated to ${url}`);
+            // try {
+            //     await page.goto(url, { waitUntil: "domcontentloaded" });
+            //     console.log(`Navigated to ${url}`);
 
-                // Perform site-specific search logic
-                if (url.includes("amazon")) {
-                    await page.waitForSelector("#twotabsearchtextbox", { timeout: 30000 });
-                    await page.type("#twotabsearchtextbox", searchTerm);
-                    await page.keyboard.press("Enter");
-                    await page.waitForSelector("#s-result-sort-select", { timeout: 30000 });
-                    await page.select("#s-result-sort-select", "price-asc-rank");
-                } else if (url.includes("ebay")) {
-                    await page.waitForSelector("#gh-ac", { timeout: 30000 });
-                    await page.type("#gh-ac", searchTerm);
-                    await page.keyboard.press("Enter");
-                } else if (url.includes("aliexpress")) {
-                    await page.waitForSelector("#search-words", { timeout: 30000 });
-                    await page.type("#search-words", searchTerm);
-                    await page.keyboard.press("Enter");
-                }
+            //     // Perform site-specific search logic
+            //     if (url.includes("amazon")) {
+            //         await page.waitForSelector("#twotabsearchtextbox", { timeout: 30000 });
+            //         await page.type("#twotabsearchtextbox", searchTerm);
+            //         await page.keyboard.press("Enter");
+            //         await page.waitForSelector("#s-result-sort-select", { timeout: 30000 });
+            //         await page.select("#s-result-sort-select", "price-asc-rank");
+            //     } else if (url.includes("ebay")) {
+            //         await page.waitForSelector("#gh-ac", { timeout: 30000 });
+            //         await page.type("#gh-ac", searchTerm);
+            //         await page.keyboard.press("Enter");
+            //     } else if (url.includes("aliexpress")) {
+            //         await page.waitForSelector("#search-words", { timeout: 30000 });
+            //         await page.type("#search-words", searchTerm);
+            //         await page.keyboard.press("Enter");
+            //     }
 
-                await page.waitForSelector(selectors.productContainer, { timeout: 30000 });
+            //     await page.waitForSelector(selectors.productContainer, { timeout: 30000 });
 
-                // Extract data with a limit of 20 items
-                const data = await page.evaluate((selectors) => {
-                    return Array.from(document.querySelectorAll(selectors.productContainer))
-                        .slice(0, 20) // Limit to 20 items
-                        .map(el => {
-                            const url = el.querySelector(selectors.url)?.getAttribute("href");
-                            const title = el.querySelector(selectors.title)?.innerText.trim();
-                            const price = el.querySelector(selectors.price)?.innerText.trim();
-                            const image = el.querySelector(selectors.image)?.src;
-                            const sponsored = el.querySelector(selectors.sponsored); // Check if it's sponsored
-                            const site = selectors.site;
+            //     // Extract data with a limit of 20 items
+            //     const data = await page.evaluate((selectors) => {
+            //         return Array.from(document.querySelectorAll(selectors.productContainer))
+            //             .slice(0, 20) // Limit to 20 items
+            //             .map(el => {
+            //                 const url = el.querySelector(selectors.url)?.getAttribute("href");
+            //                 const title = el.querySelector(selectors.title)?.innerText.trim();
+            //                 const price = el.querySelector(selectors.price)?.innerText.trim();
+            //                 const image = el.querySelector(selectors.image)?.src;
+            //                 const sponsored = el.querySelector(selectors.sponsored); // Check if it's sponsored
+            //                 const site = selectors.site;
 
-                            // Filter out items that don't have a price or have a specific image or are sponsored
-                            if (!price || sponsored || (selectors.site === "eBay" && image === "https://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png") || (selectors.site === "AliExpress" && !image)) {
-                                return null; // Skip these items
-                            }
+            //                 // Filter out items that don't have a price or have a specific image or are sponsored
+            //                 if (!price || sponsored || (selectors.site === "eBay" && image === "https://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png") || (selectors.site === "AliExpress" && !image)) {
+            //                     return null; // Skip these items
+            //                 }
 
-                            return { url, title, price, image, site };
-                        })
-                        .filter(item => item !== null); // Remove null items (those filtered out)
-                }, selectors);
+            //                 return { url, title, price, image, site };
+            //             })
+            //             .filter(item => item !== null); // Remove null items (those filtered out)
+            //     }, selectors);
 
-                return data;
-            } catch (error) {
-                console.error(`Error scraping ${url}:`, error);
-                return [];
-            } finally {
-                await page.close();
-            }
+            //     return data;
+            // } catch (error) {
+            //     console.error(`Error scraping ${url}:`, error);
+            //     return [];
+            // } finally {
+            //     await page.close();
+            // }
         };
 
         // Selectors for each site
