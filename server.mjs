@@ -5,23 +5,12 @@ import cors from "cors";
 const app = express();
 const PORT = 3000;
 
-// app.use(cors({
-//     origin: "https://cheaperr.netlify.app",
-//     methods: ["GET", "POST", "OPTIONS"],
-//     credentials: true
-// }));
-// app.options('*', cors());
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://cheaperr.netlify.app"); 
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true"); // For cookies/session-based auth
-    if (req.method === "OPTIONS") {
-      return res.sendStatus(200);
-    }
-    next();
-  });
-  
+app.use(cors({
+    origin: "https://cheaperr.netlify.app",
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true
+}));
+app.options('*', cors()); 
 
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
