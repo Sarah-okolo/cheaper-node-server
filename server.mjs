@@ -5,7 +5,11 @@ import cors from "cors";
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: "https://cheaperr.netlify.app/",
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true
+  }));
 
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
