@@ -2,10 +2,10 @@ import express from "express";
 import puppeteer from "puppeteer-core";
 import cors from "cors";
 
-app.use(cors());
-
 const app = express();
 const PORT = 3000;
+
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
