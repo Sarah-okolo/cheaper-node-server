@@ -5,19 +5,7 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = ['https://cheaperr.netlify.app'];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET','POST', 'PUT','DELETE'], // Specify allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'] //Specify allowed headers
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
