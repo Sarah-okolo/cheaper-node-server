@@ -11,13 +11,17 @@ const PORT = 3000;
 //     credentials: true
 // }));
 // app.options('*', cors());
-
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins
+    res.setHeader("Access-Control-Allow-Origin", "https://cheaperr.netlify.app"); 
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true"); // For cookies/session-based auth
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
     next();
-});
+  });
+  
 
 app.get("/", (req, res) => {
     res.send("Cheaperr scraping server is running...");
