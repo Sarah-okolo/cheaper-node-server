@@ -1,6 +1,9 @@
 import express from "express";
 import puppeteer from "puppeteer-core";
 import cors from "cors";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +21,7 @@ const URLS = {
     aliexpress: "https://www.aliexpress.com/",
 };
 
-const BROWSER_WSE_ENDPOINT = "wss://brd-customer-hl_22b15088-zone-cheaperr_app_scraping_browser:zv9bdp919qwa@brd.superproxy.io:9222";
+const BROWSER_WSE_ENDPOINT = process.env.MY_BROWSER_WSE_ENDPOINT;
 
 app.get("/scrape", async (req, res) => {
     const { search, site } = req.query;
